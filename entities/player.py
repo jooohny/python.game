@@ -1,5 +1,6 @@
 import pygame
 from glob import glob
+from helpers.image import convert
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, display):
@@ -13,10 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.make_jump = False
         self.display = display
         self.image_counter = 0
-        self.images = [self.convert(f) for f in glob("assets/pers/pers*.png")]
-
-    def convert(self, image):
-        return pygame.image.load(image).convert_alpha();
+        self.images = [convert(f) for f in glob("assets/pers/pers*.png")]
 
 
     def check_keyboard(self):
@@ -34,7 +32,8 @@ class Player(pygame.sprite.Sprite):
         if self.image_counter == 30:
             self.image_counter = 0
         self.display.blit(self.images[self.image_counter // 5], [self.x, self.y])
-        self.image_counter += 1
+        if not self.make_jump:
+            self.image_counter += 1
 
     def jump(self):
         if self.dy >= -18:  ##если dy  больше или равно, то

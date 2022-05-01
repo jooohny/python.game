@@ -2,6 +2,9 @@ from entities.player import Player
 from entities.obj import Object
 import pygame
 import random
+from helpers.image import convert
+from glob import glob
+
 pygame.init()
 
 display_w = 800
@@ -64,23 +67,13 @@ def pause():
 
 
 def create_enemies(enemies, display):
-    enemy_img = [
-        pygame.image.load("assets/en1.png"),
-        pygame.image.load("assets/en2.png"),
-        pygame.image.load("assets/en3.png"),
-                ]
-    enemy_1 = Object(5, enemy_img, display) ## здесь вызывается __init__
-    enemy_1.set_random_image()
-    enemy_1.return_self(display_w + 25, display_h - ground_level - enemy_1.height) # для каждого врага
-    enemies.append(enemy_1)
-    enemy_2 = Object(5, enemy_img, display)
-    enemy_2.set_random_image()
-    enemy_2.return_self(display_w + 300, display_h - ground_level - enemy_2.height)
-    enemies.append(enemy_2)
-    enemy_3 = Object(5, enemy_img, display) ##размеры врага и другие функции
-    enemy_3.set_random_image()
-    enemy_3.return_self(display_w + 550, display_h - ground_level - enemy_3.height)
-    enemies.append(enemy_3)
+    enemy_img = [convert(image) for image in glob('assets/enemies/en*.png')]
+    enemy_x = [display_w + 25, display_w + 300, display_w + 550]
+    for i in range(len(enemy_img)):
+        enemy = Object(5, enemy_img, display)
+        enemy.set_random_image()
+        enemy.return_self(enemy_x[i], display_h - ground_level - enemy.height)
+        enemies.append(enemy)
 
 def draw_enemies(enemies):  ##рисование врагов, функция которая определяет необходимую кординату
     for e in enemies:
@@ -120,31 +113,17 @@ def find_radius(objects):
     return radius  ##возращение radius
 
 def create_objects(display):
-    grass_img = [
-        pygame.image.load("assets/grass1.png"),
-        pygame.image.load("assets/grass2.png"),
-        pygame.image.load("assets/grass3.png"),
-        pygame.image.load("assets/grass4.png")
-                ]
+    grass_img = [convert(f) for f in glob("assets/objects/grass*.png")]
     grass = Object(4, grass_img, display)
     grass.set_random_image()
     grass.return_self(display_h - ground_level - grass.height,  display_h - grass.height)
 
-    cloud_img = [
-        pygame.image.load("assets/cloud1.png"),
-        pygame.image.load("assets/cloud2.png"),
-        pygame.image.load("assets/cloud3.png"),
-        pygame.image.load("assets/cloud4.png")
-                ]
+    cloud_img = [convert(f) for f in glob("assets/objects/cloud*.png")]
     cloud = Object(4, cloud_img, display)
     cloud.set_random_image()
     cloud.return_self(ground_level - cloud.height, cloud.height)
 
-    stone_img = [
-        pygame.image.load("assets/stone1.png"),
-        pygame.image.load("assets/stone2.png"),
-        pygame.image.load("assets/stone3.png")
-                ]
+    stone_img = [convert(f) for f in glob("assets/objects/stone*.png")]
     stone = Object(4, stone_img, display)
     stone.set_random_image()
     stone.return_self(display_h - ground_level - stone.height, display_h - stone.height)
