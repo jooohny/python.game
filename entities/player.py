@@ -16,6 +16,11 @@ class Player(pygame.sprite.Sprite):
         self.image_counter = 0
         self.images = [convert(f) for f in glob("assets/pers/pers*.png")]
 
+    def check_collision(self, objects):
+        for o in objects:
+            if pygame.sprite.collide_mask(self, o):
+                return True
+        return False
 
     def check_keyboard(self):
         keys = pygame.key.get_pressed()  ##обработка нажатия клавиш
@@ -31,13 +36,17 @@ class Player(pygame.sprite.Sprite):
     def draw(self):
         if self.image_counter == 30:
             self.image_counter = 0
-        self.display.blit(self.images[self.image_counter // 5], [self.x, self.y])
+        image = self.images[self.image_counter // 5];
+        self.mask = pygame.mask.from_surface(image)
+        self.rect = image.get_rect(topleft = (self.x, self.y));
+        self.display.blit(image, [self.x, self.y])
         if not self.make_jump:
             self.image_counter += 1
 
     def jump(self):
         if self.dy >= -18:  ##если dy  больше или равно, то
             self.y -= self.dy  ##по кардинате y рисваивается и вычитается
+            self.rect.y = self.y
             self.dy -= 1  ##падение с ускорением
         else:
             self.dy = 18

@@ -42,6 +42,8 @@ def rungame():
         player.draw()
         draw_enemies(enemies)  ##рисует врага
         draw_objects(grass, cloud, stone)
+        if player.check_collision(enemies):
+            pause()
         pygame.display.update()  ##постоянное изменение дисплея
         pygame.time.Clock().tick(60)
 
@@ -64,7 +66,6 @@ def pause():
 
         pygame.display.update()
         pygame.time.Clock().tick(15)
-
 
 def create_enemies(enemies, display):
     enemy_img = [convert(image) for image in glob('assets/enemies/en*.png')]
