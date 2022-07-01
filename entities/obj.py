@@ -1,10 +1,12 @@
 import random
 import pygame
+from glob import glob
+from helpers.image import convert
 
 class Object(pygame.sprite.Sprite):  ##класс обЬектов
-    def __init__(self, speed, images, display):##__init__ помогает нам создать объект класса
+    def __init__(self, speed, imagePattern, display):##__init__ помогает нам создать объект класса
         self.speed = speed   ##self ссылает на класс объекта
-        self.images = images
+        self.images = [convert(f) for f in glob(imagePattern)]
         self.display = display
 
     def move(self):  ##move движение наших объектов класса self

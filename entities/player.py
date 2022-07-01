@@ -36,9 +36,9 @@ class Player(pygame.sprite.Sprite):
     def draw(self):
         if self.image_counter == 30:
             self.image_counter = 0
-        image = self.images[self.image_counter // 5];
+        image = self.images[self.image_counter // 5]
         self.mask = pygame.mask.from_surface(image)
-        self.rect = image.get_rect(topleft = (self.x, self.y));
+        self.rect = image.get_rect(topleft = (self.x, self.y))
         self.display.blit(image, [self.x, self.y])
         if not self.make_jump:
             self.image_counter += 1
